@@ -1,0 +1,18 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/* # k files
+build:
+  local:
+    push: false # do not push to dockerhub when file change
+  artifacts:
+    - image: netogerbi/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync: # watch file changes
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
