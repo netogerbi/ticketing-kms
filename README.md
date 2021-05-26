@@ -11,3 +11,10 @@ To make requests to _Ingress Controller_ the path used in ingress config file is
 TIPS:
 
 - the chrome will block the access to url configured in ingress controll. just click anywhere in the browser and type: `thisisunsafe`
+
+#### Useful Commands
+
+```bash
+kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdasd
+```
