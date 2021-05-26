@@ -42,7 +42,7 @@ router.post(
         id: user.id,
         email: user.email,
       },
-      "asdasd"
+      process.env.JWT_KEY!
     );
 
     req.session = { jwt: userJwt };
