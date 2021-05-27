@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 import { BadRequestError } from "../errors/bad-request-error";
 import { RequestValidationError } from "../errors/request-validation-error";
+import { validateRequest } from "../middlewares/validate-request";
 import { User } from "../models/user";
 
 const router = express.Router();
@@ -19,13 +20,8 @@ const validator = [
 router.post(
   "/api/users/signup",
   validator,
+  validateRequest,
   async (req: Request, res: Response) => {
-    const errs = validationResult(req);
-
-    if (!errs.isEmpty()) {
-      throw new RequestValidationError(errs.array());
-    }
-
     const { email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
