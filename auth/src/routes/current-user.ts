@@ -1,19 +1,11 @@
 import express from "express";
-import jwt from "jsonwebtoken";
+import { currentUser } from "../middlewares/current-user";
+import { requireAuth } from "../middlewares/require-auth";
 
 const router = express.Router();
 
-router.get("/api/users/currentuser", (req, res) => {
-  if (!req.session?.jwt) {
-    return res.send({ currentUser: null });
-  }
-
-  try {
-    const verifyed = jwt.verify(req.session.jwt, process.env.JWT_KEY!);
-    return res.send({ currentUser: verifyed });
-  } catch (err) {
-    return res.send({ currentUser: null });
-  }
+router.get("/api/users/currentuser", requireAuth, currentUser, (req, res) => {
+  return res.send({ currentUser: req.currentUser });
 });
 
 export { router as currentUserRouter };
