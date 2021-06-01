@@ -2,18 +2,18 @@ import request from "supertest";
 import { app } from "../../app";
 
 it("responds with details about current user", async () => {
-  const signup = await request(app)
-    .post("/api/users/signup")
-    .send({
-      email: "netera@gmail.com",
-      password: "3214",
-    })
-    .expect(201);
+  const signupCookie = await global.signup();
 
   const r = await request(app)
     .get("/api/users/currentuser")
-    .set("Cookie", signup.get("Set-Cookie"))
+    .set("Cookie", signupCookie)
     .expect(200);
 
-  expect(r.body.currentUser.email).toMatch(/netera@gmail.com/);
+  expect(r.body.currentUser.email).toMatch(/test@test.com/);
+});
+
+it("responds with null if not authenticated", async () => {
+  const r = await request(app).get("/api/users/currentuser").expect(200);
+
+  expect(r.body.currentUser).toBeNull();
 });
