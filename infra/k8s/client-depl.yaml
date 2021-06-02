@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 1
+  selector: #how to refer the pod inside cluster
+    matchLabels:
+      app: client
+  template: # how the pod must be created
+    metadata:
+      labels:
+        app: client
+    spec: # tells the pod how to behave
+      containers:
+        - name: client # logging porpouses
+          image: netogerbi/ticketing-client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  selector:
+    app: client # pod reference
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
