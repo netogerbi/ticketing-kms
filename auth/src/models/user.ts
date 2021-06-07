@@ -17,7 +17,7 @@ export type UserDocument = mongoose.Document & {
   password: string;
 };
 
-const userSchema = new mongoose.Schema<UserModel>(
+const userSchema = new mongoose.Schema<UserDocument, UserModel>(
   {
     email: {
       type: String,
@@ -54,6 +54,6 @@ userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
 
-const User = mongoose.model<UserDocument, UserModel>("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
 export { User };
