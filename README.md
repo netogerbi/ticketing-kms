@@ -18,3 +18,8 @@ TIPS:
 kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
 kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdasd
 ```
+
+#### Usefull Links
+
+[ingress-nginx install](https://kubernetes.github.io/ingress-nginx/deploy/#minikube)
+[ingress-nginx installation verify](https://kubernetes.github.io/ingress-nginx/deploy/#verify-installation)
