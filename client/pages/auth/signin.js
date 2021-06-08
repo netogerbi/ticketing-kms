@@ -44,7 +44,7 @@ const SignUp = () => {
       </div>
       {errors}
       <button type="submit" className="btn btn-primary">
-        Sign Up
+        Sign In
       </button>
     </form>
   );
