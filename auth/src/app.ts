@@ -2,8 +2,7 @@ import express from "express";
 import "express-async-errors";
 import cookieSession from "cookie-session";
 
-import { NotFoundError } from "./errors/not-found-error";
-import { errorHandler } from "./middlewares/error-handler";
+import { NotFoundError, errorHandler } from "@ntgerbi/common";
 import { currentUserRouter } from "./routes/current-user";
 import { signInRouter } from "./routes/signin";
 import { signOutRouter } from "./routes/signout";
