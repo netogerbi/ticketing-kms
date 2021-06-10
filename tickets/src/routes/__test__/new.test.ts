@@ -25,11 +25,19 @@ it("POST: /api/tickets - NOT 401 - authenticated", async () => {
 it("POST: /api/tickets - 400 invalid title", async () => {
   const cookie = global.signup();
 
-  const r = await request(app)
+  await request(app)
     .post("/api/tickets")
     .set("Cookie", cookie)
     .send({
       title: "",
+      price: "10.2",
+    })
+    .expect(400);
+
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
       price: "10.2",
     })
     .expect(400);
