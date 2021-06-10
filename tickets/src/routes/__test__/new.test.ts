@@ -8,7 +8,18 @@ it("POST: /api/tickets", async () => {
 });
 
 it("POST: /api/tickets - 401 should be authenticated", async () => {
-  const r = await request(app).post("/api/tickets").send({}).expect(401);
+  await request(app).post("/api/tickets").send({}).expect(401);
+});
+
+it("POST: /api/tickets - NOT 401 - authenticated", async () => {
+  const cookie = global.signup();
+
+  const r = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({});
+
+  expect(r.status).not.toBe(401);
 });
 
 it("POST: /api/tickets - 400 invalid title", () => {});
