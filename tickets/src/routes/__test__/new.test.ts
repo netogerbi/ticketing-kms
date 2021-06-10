@@ -30,7 +30,7 @@ it("POST: /api/tickets - 400 invalid title", async () => {
     .set("Cookie", cookie)
     .send({
       title: "",
-      price: "10.2",
+      price: 10.2,
     })
     .expect(400);
 
@@ -38,11 +38,41 @@ it("POST: /api/tickets - 400 invalid title", async () => {
     .post("/api/tickets")
     .set("Cookie", cookie)
     .send({
-      price: "10.2",
+      price: 10.2,
     })
     .expect(400);
 });
 
-it("POST: /api/tickets - 400 invalid price", () => {});
+it("POST: /api/tickets - 400 invalid price", async () => {
+  const cookie = global.signup();
 
-it("POST: /api/tickets - 201 created", () => {});
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "Test title",
+      price: 0,
+    })
+    .expect(400);
+
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "Test title",
+    })
+    .expect(400);
+});
+
+it("POST: /api/tickets - 201 created", async () => {
+  const cookie = global.signup();
+
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "Test title",
+      price: 10.2,
+    })
+    .expect(201);
+});
