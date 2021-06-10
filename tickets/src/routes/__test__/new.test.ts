@@ -22,7 +22,18 @@ it("POST: /api/tickets - NOT 401 - authenticated", async () => {
   expect(r.status).not.toBe(401);
 });
 
-it("POST: /api/tickets - 400 invalid title", () => {});
+it("POST: /api/tickets - 400 invalid title", async () => {
+  const cookie = global.signup();
+
+  const r = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "",
+      price: "10.2",
+    })
+    .expect(400);
+});
 
 it("POST: /api/tickets - 400 invalid price", () => {});
 
