@@ -7,7 +7,9 @@ it("POST: /api/tickets", async () => {
   expect(r.status).not.toBe(404);
 });
 
-it("POST: /api/tickets - 401 should be authenticated", () => {});
+it("POST: /api/tickets - 401 should be authenticated", async () => {
+  const r = await request(app).post("/api/tickets").send({}).expect(401);
+});
 
 it("POST: /api/tickets - 400 invalid title", () => {});
 
