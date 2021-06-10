@@ -16,6 +16,8 @@ spec:
         - name: auth # logging porpouses
           image: netogerbi/auth
           env:
+            - name: MONGO_URI
+              value: "mongodb://auth-mongo-srv:27017/auth"
             - name: JWT_KEY #k create secret generic jwt-secret --from-literal=JWT_KEY=asdasd
               valueFrom:
                 secretKeyRef:
