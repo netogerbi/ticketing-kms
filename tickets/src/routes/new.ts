@@ -1,6 +1,7 @@
 import { currentUser, requireAuth, validateRequest } from "@ntgerbi/common";
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
+import { Ticket } from "../model/ticket";
 
 const router = express.Router();
 
@@ -17,7 +18,15 @@ router.post(
   requireAuth,
   validator,
   validateRequest,
-  (req: Request, res: Response) => res.send({})
+  async (req: Request, res: Response) => {
+    const { title, price } = req.body;
+    const userId = req.currentUser?.id!;
+
+    const newTicket = Ticket.build({ title, price, userId });
+    await newTicket.save();
+
+    res.status(201).send(newTicket.toJSON());
+  }
 );
 
 export { router as newTicketRouter };
