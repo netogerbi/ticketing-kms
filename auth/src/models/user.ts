@@ -12,12 +12,9 @@ export type UserModel = mongoose.Model<UserDocument> & {
 
 type BuildFunction = (attrs: UserAttrs) => UserDocument;
 
-export type UserDocument = mongoose.Document & {
-  email: string;
-  password: string;
-};
+export type UserDocument = mongoose.Document & UserAttrs;
 
-const userSchema = new mongoose.Schema<UserDocument, UserModel>(
+const schema = new mongoose.Schema<UserDocument, UserModel>(
   {
     email: {
       type: String,
@@ -42,7 +39,7 @@ const userSchema = new mongoose.Schema<UserDocument, UserModel>(
   }
 );
 
-userSchema.pre("save", async function (done) {
+schema.pre("save", async function (done) {
   if (this.isModified("password")) {
     const hash = await Password.toHash(this.get("password"));
     this.set("password", hash);
@@ -50,10 +47,10 @@ userSchema.pre("save", async function (done) {
   done();
 });
 
-userSchema.statics.build = (attrs: UserAttrs) => {
+schema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", schema);
 
 export { User };
