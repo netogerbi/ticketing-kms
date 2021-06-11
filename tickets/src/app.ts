@@ -4,6 +4,7 @@ import cookieSession from "cookie-session";
 
 import { NotFoundError, errorHandler } from "@ntgerbi/common";
 import { newTicketRouter } from "./routes/new";
+import { showTicketRouter } from "./routes/show";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(
 );
 
 app.use(newTicketRouter);
+app.use(showTicketRouter);
 
 app.all("*", () => {
   throw new NotFoundError();
