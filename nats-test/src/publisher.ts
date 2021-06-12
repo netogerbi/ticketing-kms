@@ -6,4 +6,14 @@ const stan = nats.connect("ticketing", "abc", {
 
 stan.on("connect", () => {
   console.log("PUB CONNECTED TO NATS");
+
+  const data = JSON.stringify({
+    id: "123",
+    title: "Rock in Rio",
+    price: 833.25,
+  });
+
+  stan.publish("ticket:created", data, () => {
+    console.log("event published");
+  });
 });
