@@ -14,7 +14,6 @@ const validator = [
 
 router.post(
   "/api/tickets",
-  currentUser,
   requireAuth,
   validator,
   validateRequest,
