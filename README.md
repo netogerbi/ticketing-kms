@@ -17,6 +17,7 @@ TIPS:
 ```bash
 kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
 kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdasd
+kubectl port-forward nats-depl-7f9c74bd95-nhrj2 4222:4222
 ```
 
 #### Usefull Links
