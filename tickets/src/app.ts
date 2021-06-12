@@ -2,7 +2,7 @@ import express from "express";
 import "express-async-errors";
 import cookieSession from "cookie-session";
 
-import { NotFoundError, errorHandler } from "@ntgerbi/common";
+import { NotFoundError, errorHandler, currentUser } from "@ntgerbi/common";
 import { newTicketRouter } from "./routes/new";
 import { showTicketRouter } from "./routes/show";
 import { indexTicketRouter } from "./routes";
@@ -20,6 +20,7 @@ app.use(
   })
 );
 
+app.use(currentUser);
 app.use(newTicketRouter);
 app.use(showTicketRouter);
 app.use(indexTicketRouter);
