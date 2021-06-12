@@ -8,7 +8,7 @@ const router = express.Router();
 const validator = [
   body("title").isString().trim().notEmpty().withMessage("Title must be valid"),
   body("price")
-    .isFloat({ min: 0.01 })
+    .isFloat({ min: 0 })
     .withMessage("Price must be a floating number"),
 ];
 

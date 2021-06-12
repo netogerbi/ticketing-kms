@@ -52,7 +52,7 @@ it("POST: /api/tickets - 400 invalid price", async () => {
     .set("Cookie", cookie)
     .send({
       title: "Test title",
-      price: 0,
+      price: -0.01,
     })
     .expect(400);
 
