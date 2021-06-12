@@ -22,7 +22,6 @@ const schema = new mongoose.Schema<TicketDocument, TicketModel>(
     title: {
       type: String,
       required: true,
-      unique: true,
     },
     price: {
       type: Number,
