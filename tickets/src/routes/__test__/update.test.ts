@@ -87,3 +87,28 @@ it("PUT: /api/tickets/:id - 400 title and price validation error", async () => {
     })
     .expect(400);
 });
+
+it("PUT: /api/tickets/:id - 200 OK", async () => {
+  const cookie = global.signup();
+
+  const r = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "Test title",
+      price: 10.2,
+    })
+    .expect(201);
+
+  const r2 = await request(app)
+    .put(`/api/tickets/${r.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: "Rock in Rio",
+      price: 800.5,
+    })
+    .expect(200);
+
+  expect(r2.body.title).toMatch(/Rock in Rio/);
+  expect(r2.body.price).toBe(800.5);
+});
