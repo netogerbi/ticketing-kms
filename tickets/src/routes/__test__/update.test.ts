@@ -17,3 +17,23 @@ it("PUT: /api/tickets/:id - 401 Unauthorized", async () => {
 
   await request(app).put(`/api/tickets/${id}`).send({}).expect(401);
 });
+
+it("PUT: /api/tickets/:id - 401 Unauthorized - user not own ticket", async () => {
+  const r = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signup())
+    .send({
+      title: "Test title",
+      price: 10.2,
+    })
+    .expect(201);
+
+  await request(app)
+    .put(`/api/tickets/${r.body.id}`)
+    .set("Cookie", global.signup())
+    .send({
+      title: "Rock in Rio",
+      price: 800.5,
+    })
+    .expect(401);
+});
