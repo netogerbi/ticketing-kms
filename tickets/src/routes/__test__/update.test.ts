@@ -8,7 +8,10 @@ it("PUT: /api/tickets/:id - 404 Record Not Found", async () => {
   await request(app)
     .put(`/api/tickets/${id}`)
     .set("Cookie", global.signup())
-    .send({})
+    .send({
+      title: "Test title",
+      price: 10.2,
+    })
     .expect(404);
 });
 
@@ -36,4 +39,51 @@ it("PUT: /api/tickets/:id - 401 Unauthorized - user not own ticket", async () =>
       price: 800.5,
     })
     .expect(401);
+});
+
+it("PUT: /api/tickets/:id - 400 title and price validation error", async () => {
+  const cookie = global.signup();
+
+  const r = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "Test title",
+      price: 10.2,
+    })
+    .expect(201);
+
+  await request(app)
+    .put(`/api/tickets/${r.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: "Rock in Rio",
+      price: -1,
+    })
+    .expect(400);
+
+  await request(app)
+    .put(`/api/tickets/${r.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: "Rock in Rio",
+    })
+    .expect(400);
+
+  await request(app)
+    .put(`/api/tickets/${r.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: "",
+      price: 10.2,
+    })
+    .expect(400);
+
+  await request(app)
+    .put(`/api/tickets/${r.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      price: 10.2,
+    })
+    .expect(400);
 });
