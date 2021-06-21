@@ -16,11 +16,12 @@ stan.on("connect", () => {
   const opts = stan
     .subscriptionOptions()
     .setManualAckMode(true)
-    .setDeliverAllAvailable();
+    .setDeliverAllAvailable()             // deliver all messages
+    .setDurableName('subscription-name'); // not processed by this durable name (id) - needs queue group
 
   const subscription = stan.subscribe(
     "ticket:created",
-    // "orders-services-queue-group",
+    "queue-group-name",
     opts
   );
 
