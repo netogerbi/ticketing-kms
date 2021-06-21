@@ -13,26 +13,28 @@ stan.on("connect", () => {
     process.exit();
   });
 
-  const opts = stan
-    .subscriptionOptions()
-    .setManualAckMode(true)
-    .setDeliverAllAvailable()             // deliver all messages
-    .setDurableName('subscription-name'); // not processed by this durable name (id) - needs queue group
+  new TicketCreatedListener(stan).listen();
 
-  const subscription = stan.subscribe(
-    "ticket:created",
-    "queue-group-name",
-    opts
-  );
+  // const opts = stan
+  //   .subscriptionOptions()
+  //   .setManualAckMode(true)
+  //   .setDeliverAllAvailable()             // deliver all messages
+  //   .setDurableName('subscription-name'); // not processed by this durable name (id) - needs queue group
 
-  subscription.on("message", (msg: Message) => {
-    const data = msg.getData();
+  // const subscription = stan.subscribe(
+  //   "ticket:created",
+  //   "queue-group-name",
+  //   opts
+  // );
 
-    if (typeof data === "string")
-      console.log("Message received", msg.getSequence(), JSON.parse(data));
+  // subscription.on("message", (msg: Message) => {
+  //   const data = msg.getData();
 
-    msg.ack();
-  });
+  //   if (typeof data === "string")
+  //     console.log("Message received", msg.getSequence(), JSON.parse(data));
+
+  //   msg.ack();
+  // });
 });
 
 process.on("SIGINT", () => stan.close());
@@ -95,5 +97,4 @@ class TicketCreatedListener extends Listener {
     console.log('Event Data:', data);
     msg.ack();
   }
-  
 }
