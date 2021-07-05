@@ -3,6 +3,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 
 jest.setTimeout(60000);
+jest.mock("../nats-wrapper");
 
 let mongo: any;
 beforeAll(async () => {
