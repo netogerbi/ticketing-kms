@@ -126,7 +126,7 @@ it("should publish ticket updated event", async () => {
     })
     .expect(201);
 
-  const r2 = await request(app)
+  await request(app)
     .put(`/api/tickets/${r.body.id}`)
     .set("Cookie", cookie)
     .send({
