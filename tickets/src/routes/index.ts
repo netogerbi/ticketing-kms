@@ -1,4 +1,3 @@
-import { NotFoundError } from "@ntgerbi/common";
 import express, { Request, Response } from "express";
 import { Ticket } from "../model/ticket";
 
