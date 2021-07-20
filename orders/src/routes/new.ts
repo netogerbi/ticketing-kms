@@ -1,12 +1,64 @@
+import {
+  BadRequestError,
+  NotFoundError,
+  OrderStatus,
+  requireAuth,
+  validateRequest,
+} from "@ntgerbi/common";
 import express, { Request, Response } from "express";
-// import { Order } from "../model/order";
+import { body } from "express-validator";
+import mongoose from "mongoose";
+import { Order } from "../models/order";
+import { Ticket } from "../models/ticket";
 
 const router = express.Router();
 
-router.post("/api/orders", async (req: Request, res: Response) => {
-  // const ticketsFound = await Order.find({});
-  const ticketsFound = {};
-  res.send(ticketsFound);
-});
+const EXPIRATION_WINDOW_SECONDS = 15 * 60;
+
+const validator = [
+  body("ticketId")
+    .not()
+    .isEmpty()
+    .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
+    .withMessage("ticketId must be provided"),
+];
+
+router.post(
+  "/api/orders",
+  requireAuth,
+  validator,
+  validateRequest,
+  async (req: Request, res: Response) => {
+    const { ticketId } = req.body;
+
+    const ticketFound = await Ticket.findById(ticketId);
+
+    if (!ticketFound) {
+      throw new NotFoundError();
+    }
+
+    const isReserved = await ticketFound.isReserved();
+
+    if (isReserved) {
+      throw new BadRequestError(
+        "Ticket id " + ticketId + " is already reserved"
+      );
+    }
+
+    const expiration = new Date();
+    expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS);
+
+    const newOrder = Order.build({
+      userId: req.currentUser!.id,
+      status: OrderStatus.Created,
+      expiresAt: expiration,
+      ticket: ticketFound,
+    });
+
+    await newOrder.save();
+
+    res.status(201).send(newOrder);
+  }
+);
 
 export { router as newOrderRouter };
