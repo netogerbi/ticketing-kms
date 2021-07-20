@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { OrderStatus } from "@ntgerbi/common";
 import { TicketDocument } from "./ticket";
 
+export { OrderStatus };
+
 export type OrderAttrs = {
   userId: string;
   status: OrderStatus;
