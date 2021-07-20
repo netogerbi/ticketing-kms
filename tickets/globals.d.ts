@@ -1,5 +1,3 @@
-declare namespace NodeJS {
-  interface Global {
-    signup(): string[];
-  }
+declare module globalThis {
+  function signup(): string[];
 }
