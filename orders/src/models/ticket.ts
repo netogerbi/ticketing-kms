@@ -58,6 +58,6 @@ schema.methods.isReserved = async function () {
   return !!existingOrder;
 };
 
-const Ticket = mongoose.model("Order", schema);
+const Ticket = mongoose.model("Ticket", schema);
 
 export { Ticket };
