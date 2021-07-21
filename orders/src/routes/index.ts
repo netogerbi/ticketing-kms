@@ -1,12 +1,16 @@
+import { requireAuth, validateRequest } from "@ntgerbi/common";
 import express, { Request, Response } from "express";
-// import { Order } from "../model/order";
+import { body } from "express-validator";
+import { Order } from "../models/order";
 
 const router = express.Router();
 
-router.get("/api/orders", async (req: Request, res: Response) => {
-  // const ticketsFound = await Order.find({});
-  const ticketsFound = {};
-  res.send(ticketsFound);
+router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
+  const ordersFound = await Order.find({
+    userId: req.currentUser!.id,
+  }).populate("ticket");
+
+  res.send(ordersFound);
 });
 
 export { router as indexOrderRouter };
