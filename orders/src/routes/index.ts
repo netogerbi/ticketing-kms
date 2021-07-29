@@ -1,6 +1,5 @@
 import { requireAuth, validateRequest } from "@ntgerbi/common";
 import express, { Request, Response } from "express";
-import { body } from "express-validator";
 import { Order } from "../models/order";
 
 const router = express.Router();
