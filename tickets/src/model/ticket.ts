@@ -8,6 +8,7 @@ export type TicketAttrs = {
 
 export type TicketDocument = mongoose.Document &
   TicketAttrs & {
+    version: number;
     createdAt: string;
   };
 
@@ -40,6 +41,8 @@ const schema = new mongoose.Schema<TicketDocument, TicketModel>(
         delete ret.__v;
       },
     },
+    optimisticConcurrency: true,
+    versionKey: "version",
   }
 );
 
