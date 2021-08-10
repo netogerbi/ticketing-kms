@@ -11,7 +11,10 @@ export type OrderAttrs = {
   ticket: TicketDocument;
 };
 
-export type OrderDocument = mongoose.Document & OrderAttrs;
+export type OrderDocument = mongoose.Document &
+  OrderAttrs & {
+    version: number;
+  };
 
 type BuildFunction = (attrs: OrderAttrs) => OrderDocument;
 
@@ -48,6 +51,8 @@ const schema = new mongoose.Schema<OrderDocument, OrderModel>(
         delete ret.__v;
       },
     },
+    optimisticConcurrency: true,
+    versionKey: "version",
   }
 );
 

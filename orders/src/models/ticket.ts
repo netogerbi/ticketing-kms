@@ -10,6 +10,7 @@ export type TicketAttrs = {
 export type TicketDocument = mongoose.Document &
   TicketAttrs & {
     isReserved(): Promise<boolean>;
+    version: number;
   };
 
 type BuildFunction = (attrs: TicketAttrs) => TicketDocument;
@@ -37,6 +38,8 @@ const schema = new mongoose.Schema<TicketDocument, TicketModel>(
         delete ret.__v;
       },
     },
+    optimisticConcurrency: true,
+    versionKey: "version",
   }
 );
 
