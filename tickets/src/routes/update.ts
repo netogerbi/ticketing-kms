@@ -40,6 +40,8 @@ router.put(
       price: req.body.price,
     });
 
+    if (!ticket.isModified()) return res.send(ticket);
+
     await ticket.save();
 
     new TickerUpdatedPublisher(natsWrapper.client).publish({
@@ -50,7 +52,7 @@ router.put(
       userId: ticket.userId,
     });
 
-    res.send(ticket);
+    return res.send(ticket);
   }
 );
 
