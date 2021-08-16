@@ -10,6 +10,7 @@ export type TicketDocument = mongoose.Document &
   TicketAttrs & {
     version: number;
     createdAt: string;
+    orderId?: string;
   };
 
 type BuildFunction = (attrs: TicketAttrs) => TicketDocument;
@@ -31,6 +32,9 @@ const schema = new mongoose.Schema<TicketDocument, TicketModel>(
     userId: {
       type: String,
       required: true,
+    },
+    orderId: {
+      type: String,
     },
   },
   {
