@@ -20,7 +20,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 
     ticket.set("orderId", data.id);
 
-    ticket.save();
+    await ticket.save();
 
     msg.ack();
   }
