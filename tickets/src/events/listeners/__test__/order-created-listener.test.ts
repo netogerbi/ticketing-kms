@@ -17,7 +17,7 @@ const setup = async () => {
   await ticket.save();
 
   const data: OrderCreatedEvent["data"] = {
-    id: mongoose.Types.ObjectId().toHexString(),
+    id: new mongoose.Types.ObjectId().toHexString(),
     version: 1,
     status: OrderStatus.Created,
     userId: ticket.userId,
@@ -35,6 +35,10 @@ const setup = async () => {
 
   return { listener, ticket, data, msg };
 };
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 it("sets the orderId of the ticket", async () => {
   const { listener, data, msg, ticket } = await setup();
@@ -60,4 +64,10 @@ it("publishes a ticket updated event", async () => {
   await listener.onMessage(data, msg);
 
   expect(natsWrapper.client.publish).toHaveBeenCalled();
+
+  const eventData = JSON.parse(
+    (natsWrapper.client.publish as jest.Mock).mock.calls[0][1]
+  );
+
+  expect(data.id).toBe(eventData.orderId);
 });
