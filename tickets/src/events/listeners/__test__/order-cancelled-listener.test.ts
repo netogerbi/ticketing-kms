@@ -3,10 +3,10 @@ import { Ticket } from "../../../model/ticket";
 import { natsWrapper } from "../../../nats-wrapper";
 import mongoose from "mongoose";
 import { Message } from "node-nats-streaming";
-import { OderCancelledListener } from "../order-cancelled-listener";
+import { OrderCancelledListener } from "../order-cancelled-listener";
 
 const setup = async () => {
-  const listener = new OderCancelledListener(natsWrapper.client);
+  const listener = new OrderCancelledListener(natsWrapper.client);
 
   const orderId = mongoose.Types.ObjectId().toHexString();
 
