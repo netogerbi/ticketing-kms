@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import mongoose from "mongoose";
 import { natsWrapper } from "../../nats-wrapper";
+import { Ticket } from "../../model/ticket";
 
 it("PUT: /api/tickets/:id - 404 Record Not Found", async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
@@ -134,6 +135,35 @@ it("should publish ticket updated event", async () => {
       price: 800.5,
     })
     .expect(200);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
+
+it("should rejects updates if ticket is reserved", async () => {
+  const cookie = global.signup();
+  const id = new mongoose.Types.ObjectId().toHexString();
+
+  const r = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "Test title",
+      price: 10.2,
+    })
+    .expect(201);
+
+  const ticket = await Ticket.findById(r.body.id);
+  ticket!.set("orderId", id);
+  await ticket!.save();
+
+  await request(app)
+    .put(`/api/tickets/${r.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: "Rock in Rio",
+      price: 800.5,
+    })
+    .expect(400);
 
   expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
