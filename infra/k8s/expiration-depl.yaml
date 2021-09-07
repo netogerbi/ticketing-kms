@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expiration-depl
+spec:
+  replicas: 1
+  selector: #how to refer the pod inside cluster
+    matchLabels:
+      app: expiration
+  template: # how the pod must be created
+    metadata:
+      labels:
+        app: expiration
+    spec: # tells the pod how to behave
+      containers:
+        - name: expiration # logging porpouses
+          image: netogerbi/expiration
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name # using podname as env var
+            - name: NATS_URL
+              value: "http://nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: "ticketing"
+            - name: REDIS_HOST
+              value: expiration-redis-srv
