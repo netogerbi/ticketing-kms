@@ -1,9 +1,4 @@
-import {
-  Listener,
-  NotFoundError,
-  Subjects,
-  TicketUpdatedEvent,
-} from "@ntgerbi/common";
+import { Listener, Subjects, TicketUpdatedEvent } from "@ntgerbi/common";
 import { Message } from "node-nats-streaming";
 import { Ticket } from "../../models/ticket";
 import { queueGroupName } from "./queue-gropu-name";
