@@ -8,7 +8,7 @@ import { OrderCancelledListener } from "../order-cancelled-listener";
 const setup = async () => {
   const listener = new OrderCancelledListener(natsWrapper.client);
 
-  const orderId = mongoose.Types.ObjectId().toHexString();
+  const orderId = new mongoose.Types.ObjectId().toHexString();
 
   const ticket = Ticket.build({
     title: "Concert",

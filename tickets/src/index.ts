@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { ConnectOptions } from "mongoose";
 import { app } from "./app";
 import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
 import { OrderCreatedListener } from "./events/listeners/order-created-listener";
@@ -37,11 +37,7 @@ const start = async () => {
     new OrderCreatedListener(natsWrapper.client).listen();
     new OrderCancelledListener(natsWrapper.client).listen();
 
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    });
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDB successfully");
   } catch (err) {
     console.error(err);
