@@ -62,7 +62,9 @@ schema.methods.isReserved = async function () {
     ticket: this as any,
     status: {
       $in: [
+        //@ts-ignore
         OrderStatus.Created,
+        //@ts-ignore
         OrderStatus.AwaitingPayment,
         OrderStatus.Complete,
       ],

@@ -44,7 +44,7 @@ it("return error an user fetch an order of another user", async () => {
     .expect(201);
 
   await request(app)
-    .get(`/api/orders/${mongoose.Types.ObjectId()}`)
+    .get(`/api/orders/${new mongoose.Types.ObjectId().toHexString()}`)
     .set("Cookie", user)
     .expect(404);
 });
