@@ -3,6 +3,7 @@ import "express-async-errors";
 import cookieSession from "cookie-session";
 
 import { NotFoundError, errorHandler, currentUser } from "@ntgerbi/common";
+import { createChargeRoute } from "./routes/new";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(
 );
 
 app.use(currentUser);
+app.use(createChargeRoute);
 
 app.all("*", () => {
   throw new NotFoundError();
