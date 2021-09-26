@@ -11,7 +11,8 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
     const ticket = await Ticket.findFromEvent(data);
 
     if (!ticket) {
-      return console.log("Ticket not found");
+      console.log("Ticket not found");
+      return msg.ack();
     }
 
     const { title, price } = data;
