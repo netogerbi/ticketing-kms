@@ -6,13 +6,12 @@ import {
   requireAuth,
   validateRequest,
 } from "@ntgerbi/common";
+import { stripe } from "../stripe";
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { Order } from "../models/order";
 
 const router = express.Router();
-
-const EXPIRATION_WINDOW_SECONDS = 5; //15 * 60;
 
 const validator = [
   body("token").not().isEmpty().withMessage("Token must be provided"),
@@ -40,6 +39,12 @@ router.post(
     if (order.status === OrderStatus.Cancelled) {
       throw new BadRequestError("Cannot pay order cancelled!");
     }
+
+    stripe.charges.create({
+      currency: "USD",
+      amount: order.price * 100,
+      source: token,
+    });
 
     res.send({ success: true });
   }
