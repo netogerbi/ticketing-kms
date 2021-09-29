@@ -1,3 +1,3 @@
 declare module globalThis {
-  function signup(): string[];
+  function signup(id?: string): string[];
 }
