@@ -5,7 +5,7 @@ const LandingPage = ({ currentUser }) => {
   return currentUser ? <h1>Signed In</h1> : <h1>NOT Signed In</h1>;
 };
 
-LandingPage.getInitialProps = async (context) => {
+LandingPage.getInitialProps = async (context, client, currentUser) => {
   return {};
   // const cli = client(context);
   // const { data } = await cli.get("/api/users/currentuser");
