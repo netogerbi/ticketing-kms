@@ -11,6 +11,8 @@ const validator = [
   body("title").isString().trim().notEmpty().withMessage("Title must be valid"),
   body("price")
     .isFloat({ min: 0 })
+    .withMessage("Price must be greater than 0")
+    .isNumeric()
     .withMessage("Price must be a floating number"),
 ];
 
