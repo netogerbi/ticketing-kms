@@ -1,10 +1,15 @@
-import client from "../api/client";
+import Link from "next/link";
 
 const LandingPage = ({ currentUser, tickets }) => {
   const ticketList = tickets.map((ticket) => (
     <tr key={ticket.id}>
       <td>{ticket.title}</td>
       <td>{ticket.price}</td>
+      <td>
+        <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
+          <a>View</a>
+        </Link>
+      </td>
     </tr>
   ));
   return (
@@ -15,6 +20,7 @@ const LandingPage = ({ currentUser, tickets }) => {
           <tr>
             <th>Title</th>
             <th>price</th>
+            <th>Link</th>
           </tr>
         </thead>
         <tbody>{ticketList}</tbody>
