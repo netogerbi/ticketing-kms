@@ -19,7 +19,7 @@ export type TicketModel = mongoose.Model<TicketDocument> & {
   build: BuildFunction;
 };
 
-const schema = new mongoose.Schema<TicketDocument, TicketModel>(
+const schema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -50,10 +50,8 @@ const schema = new mongoose.Schema<TicketDocument, TicketModel>(
   }
 );
 
-schema.static("build", function (attrs: TicketAttrs) {
-  return new Ticket(attrs);
-});
+schema.statics.build = (attrs: TicketAttrs) => new Ticket(attrs);
 
-const Ticket = mongoose.model("Ticket", schema);
+const Ticket = mongoose.model<TicketDocument, TicketModel>("Ticket", schema);
 
 export { Ticket };
