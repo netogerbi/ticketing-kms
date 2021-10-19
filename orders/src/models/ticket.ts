@@ -25,7 +25,7 @@ export type TicketModel = mongoose.Model<TicketDocument> & {
   findFromEvent: FindFromEvent;
 };
 
-const schema = new mongoose.Schema<TicketDocument, TicketModel>(
+const schema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -53,7 +53,10 @@ schema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket({ _id: attrs.id, title: attrs.title, price: attrs.price });
 };
 
-schema.statics.findFromEvent = (event: { id: string; version: number }) => {
+schema.statics.findFromEvent = async (event: {
+  id: string;
+  version: number;
+}) => {
   return Ticket.findOne({ _id: event.id, version: event.version - 1 });
 };
 
@@ -74,6 +77,6 @@ schema.methods.isReserved = async function () {
   return !!existingOrder;
 };
 
-const Ticket = mongoose.model("Ticket", schema);
+const Ticket = mongoose.model<TicketDocument, TicketModel>("Ticket", schema);
 
 export { Ticket };

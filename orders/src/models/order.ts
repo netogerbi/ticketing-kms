@@ -22,7 +22,7 @@ export type OrderModel = mongoose.Model<OrderDocument> & {
   build: BuildFunction;
 };
 
-const schema = new mongoose.Schema<OrderDocument, OrderModel>(
+const schema = new mongoose.Schema(
   {
     userId: {
       type: String,
@@ -60,6 +60,6 @@ schema.statics.build = (attrs: OrderAttrs) => {
   return new Order(attrs);
 };
 
-const Order = mongoose.model("Order", schema);
+const Order = mongoose.model<OrderDocument, OrderModel>("Order", schema);
 
 export { Order };

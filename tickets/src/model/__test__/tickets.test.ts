@@ -21,7 +21,7 @@ it("implements optimistic concurrency control", async () => {
   try {
     await t2!.save();
   } catch (err) {
-    r = err;
+    r = err as Error;
   }
 
   expect(r!.message).toMatch(

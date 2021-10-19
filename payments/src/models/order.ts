@@ -17,7 +17,7 @@ type OrderModel = mongoose.Model<OrderDocument> & {
   build: BuildFunction;
 };
 
-const schema = new mongoose.Schema<OrderDocument, OrderModel>(
+const schema = new mongoose.Schema(
   {
     status: {
       type: String,
@@ -54,6 +54,6 @@ schema.statics.build = (attrs: OrderAttrs) => {
   });
 };
 
-const Order = mongoose.model("Order", schema);
+const Order = mongoose.model<OrderDocument, OrderModel>("Order", schema);
 
 export { Order };
