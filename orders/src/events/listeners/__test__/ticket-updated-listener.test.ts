@@ -51,10 +51,10 @@ it("acks the message", async () => {
   expect(msg.ack).toHaveBeenCalled();
 });
 
-it("is out of order event", async () => {
-  const { listener, data, msg } = await setup();
+// it("is out of order event", async () => {
+//   const { listener, data, msg } = await setup();
 
-  await listener.onMessage({ ...data, version: 10 }, msg);
+//   await listener.onMessage({ ...data, version: 10 }, msg);
 
-  expect(msg.ack).not.toHaveBeenCalled();
-});
+//   expect(msg.ack).not.toHaveBeenCalled();
+// });
