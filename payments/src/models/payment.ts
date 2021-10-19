@@ -13,7 +13,7 @@ type PaymentModel = mongoose.Model<PaymentDocument> & {
   build: BuildFn;
 };
 
-const schema = new mongoose.Schema<PaymentDocument, PaymentModel>(
+const schema = new mongoose.Schema(
   {
     orderId: {
       required: true,
@@ -36,6 +36,9 @@ const schema = new mongoose.Schema<PaymentDocument, PaymentModel>(
 
 schema.static("build", (attrs: PaymentAttrs) => new Payment(attrs));
 
-const Payment = mongoose.model("Payment", schema);
+const Payment = mongoose.model<PaymentDocument, PaymentModel>(
+  "Payment",
+  schema
+);
 
 export { Payment };
